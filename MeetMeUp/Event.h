@@ -24,4 +24,6 @@
 + (NSArray *)eventsFromArray:(NSArray *)incomingArray;
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
++ (void)performSearchWithKeyword:(NSString *)keyword completion:(void (^)(NSArray *varName))completionHandler;
+
 @end

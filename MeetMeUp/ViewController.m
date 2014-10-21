@@ -16,16 +16,44 @@
 @property (nonatomic, strong) NSArray *dataArray;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+
+
+
+
+
 @end
 
 @implementation ViewController
-            
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [Event performSearchWithKeyword:@"mobile" completion:^(NSArray *varName) {
-        NSLog(@"%@", varName);
-    }];
+
+
+    NSArray *abc = @[@1, @2, @3];
+    NSDictionary *bca = @{@"key": @"value", @"key2": @"value2"};
+
+    NSArray *animals = @[@"elephant", @"badger", @"mouse", @"toad"];
+    NSArray *reverseAnimals = animals.reverseObjectEnumerator.allObjects;
+    NSArray *sortedAnimals = [animals sortedArrayUsingSelector:@selector(compare:)];
+    NSLog(@"%@", [sortedAnimals componentsJoinedByString:@", "]);
+
+    NSNumber *number =@12345678;
+    NSLog(@"%@", [number descriptionWithLocale:[NSLocale localeWithLocaleIdentifier:@"fr"]]);
+
+
+
+    NSLog(@"%@", bca);
+    NSLog(@"%@", abc);
+
+
+
+
+
+//    [Event performSearchWithKeyword:@"mobile" completion:^(NSArray *varName) {
+//        self.dataArray = varName;
+//        [self.tableView reloadData];
+//    }];
 
 }
 
@@ -41,31 +69,37 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventCell"];
     
-    Event *e = self.dataArray[indexPath.row];
-    
-    cell.textLabel.text = e.name;
-    cell.detailTextLabel.text = e.address;
-    if (e.photoURL)
-    {
-        NSURLRequest *imageReq = [NSURLRequest requestWithURL:e.photoURL];
-        
-        [NSURLConnection sendAsynchronousRequest:imageReq queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-           dispatch_async(dispatch_get_main_queue(), ^{
-               if (!connectionError) {
-                   [cell.imageView setImage:[UIImage imageWithData:data]];
-                   [cell layoutSubviews];
-               }
-           });
+//    Event *e = self.dataArray[indexPath.row];
+    NSDictionary *eventActual = [self.dataArray objectAtIndex:indexPath.row];
 
+//    NSLog(@"%@", e);
 
-        }];
-        
-        
-    }else
-    {
-       [cell.imageView setImage:[UIImage imageNamed:@"logo"]];
-    }
-    
+    cell.textLabel.text = [eventActual objectForKey:@"name"];
+    cell.detailTextLabel.text = [eventActual objectForKey:@"status"];
+
+//    cell.textLabel.text = e.name;
+//    cell.detailTextLabel.text = e.address;
+//    if (e.photoURL)
+//    {
+//        NSURLRequest *imageReq = [NSURLRequest requestWithURL:e.photoURL];
+//        
+//        [NSURLConnection sendAsynchronousRequest:imageReq queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+//           dispatch_async(dispatch_get_main_queue(), ^{
+//               if (!connectionError) {
+//                   [cell.imageView setImage:[UIImage imageWithData:data]];
+//                   [cell layoutSubviews];
+//               }
+//           });
+//
+//
+//        }];
+//        
+//        
+//    }else
+//    {
+//       [cell.imageView setImage:[UIImage imageNamed:@"logo"]];
+//    }
+
     return cell;
 }
 
@@ -75,7 +109,8 @@
     EventDetailViewController *detailVC = [segue destinationViewController];
 
     Event *e = self.dataArray[self.tableView.indexPathForSelectedRow.row];
-    detailVC.event = e;
+//    NSLog(@"%@", e);
+        detailVC.event = e;
 }
 
 #pragma searchbar delegate

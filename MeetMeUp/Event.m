@@ -57,6 +57,15 @@
                                                                                        error:nil] objectForKey:@"results"];
                                NSMutableArray *eventsArray = [jsonArray mutableCopy];
 
+                               for(NSDictionary *dict in jsonArray) {
+                                   Event *eventActual = [[Event alloc] initWithDictionary:dict];
+                                   [eventsArray addObject:eventActual];
+                               }
+
+
+
+
+
                                completionHandler(eventsArray);
 
 
